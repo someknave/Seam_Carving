@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="SeamCarvingTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2020-09-21T09:16:50" hostname="DESKTOP-A82CK7U" time="3.385">
+<testsuite name="SeamCarvingTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2020-09-21T12:43:02" hostname="DESKTOP-A82CK7U" time="44.543">
   <properties/>
-  <testcase name="start" classname="SeamCarvingTest" time="3.385"/>
+  <testcase name="start" classname="SeamCarvingTest" time="44.543"/>
   <system-out><![CDATA[?[1;31m
 Start test 1?[0m
 ?[1;31m

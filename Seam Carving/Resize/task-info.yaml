@@ -191,6 +191,22 @@ files:
 - name: test/trees.png
   visible: false
   learner_created: false
+- name: src/images/blue-resize.png
+  visible: true
+  learner_created: true
+- name: test/blue-reduced.png
+  visible: true
+  learner_created: true
+- name: test/small-reduced.png
+  visible: true
+  learner_created: true
+- name: test/trees-reduced.png
+  visible: true
+  learner_created: true
 feedback_link: https://hyperskill.org/projects/100/stages/555/implement
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations! Continue on <a href="https://hyperskill.org/projects/100/stages/555/implement">JetBrains
+    Academy</a>
+  time: Mon, 21 Sep 2020 12:43:47 UTC
 record: -1

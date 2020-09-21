@@ -18,12 +18,13 @@ val imagePath = "C:\\Users\\nesce\\IdeaProjects\\Seam Carving\\Seam Carving\\tas
 fun main(args: Array<String>) {
     val imagein = imagePath + if (args.contains("-in")) args[1 + args.indexOf("-in")].replace("/", "\\") else "src\\images\\blue.png"
     val out = imagePath + if (args.contains("-out")) args[1 + args.indexOf("-out")].replace("/", "\\") else "src\\images\\blue_intensity.png"
-    val image = ImageIO.read(File(imagein))
-    val seam = image.getEnergyMap().verticalSeam()
-    for (point in seam) {
-        image.setRGB(point.first, point.second, 255.shl(16))
-    }
-
+    val wAdjust =  args.getOrNull(1 + args.indexOf("-width"))?.toIntOrNull()?: 100
+    val hAdjust =  args.getOrNull(1 + args.indexOf("-height"))?.toIntOrNull()?: 50
+    var image = ImageIO.read(File(imagein))
+    repeat (wAdjust) { image = image.removeSeam() }
+    image = image.transpose()
+    repeat (hAdjust) { image = image.removeSeam() }
+    image = image.transpose()
     ImageIO.write(image, "PNG", File(out))
 
 }
@@ -127,4 +128,29 @@ fun Array<DoubleArray>.verticalSeam(): List<Pair<Int, Int>> {
     }
     val shortest = distMap.minByOrNull { it.second }?:distMap[0]
     return shortest.first.mapIndexed { index, i -> i to index }
+}
+
+
+fun BufferedImage.removeSeam(): BufferedImage {
+    val seam = this.getEnergyMap().verticalSeam()
+    val image = BufferedImage(width-1, height, BufferedImage.TYPE_INT_RGB)
+    for (j in 0 until height) {
+        for (i in 0 until width-1) {
+            if (i < seam[j].first) {
+                image.setRGB(i, j, this.getRGB(i, j))
+            } else {
+                image.setRGB(i, j, this.getRGB(i + 1, j))
+            }
+        }
+    }
+    return image
+}
+fun BufferedImage.transpose(): BufferedImage {
+    val image = BufferedImage(height, width, BufferedImage.TYPE_INT_RGB)
+    for (j in 0 until height) {
+        for (i in 0 until width) {
+            image.setRGB(j,i, this.getRGB(i, j))
+        }
+    }
+    return image
 }
