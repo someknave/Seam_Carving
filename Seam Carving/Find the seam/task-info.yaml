@@ -277,6 +277,22 @@ files:
 - name: test/trees.png
   visible: false
   learner_created: false
+- name: src/images/blue-seam.png
+  visible: true
+  learner_created: true
+- name: test/trees-seam.png
+  visible: true
+  learner_created: true
+- name: test/blue-seam.png
+  visible: true
+  learner_created: true
+- name: test/small-seam.png
+  visible: true
+  learner_created: true
 feedback_link: https://hyperskill.org/projects/100/stages/553/implement
-status: Unchecked
-record: -1
+status: Solved
+feedback:
+  message: Congratulations! Continue on <a href="https://hyperskill.org/projects/100/stages/553/implement">JetBrains
+    Academy</a>
+  time: Mon, 21 Sep 2020 09:16:54 UTC
+record: 4

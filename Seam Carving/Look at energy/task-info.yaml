@@ -187,13 +187,9 @@ files:
   visible: true
   learner_created: true
 feedback_link: https://hyperskill.org/projects/100/stages/552/implement
-status: Failed
+status: Solved
 feedback:
-  message: |-
-    Wrong answer in test #3
-
-    Hash sum of your image (766471d9fae10007056e3fbd7ba5555f) does not match expected value
-
-    Arguments: -in test/trees.png -out test/trees-energy.png
-  time: Sun, 20 Sep 2020 03:17:20 UTC
-record: -1
+  message: Congratulations! Continue on <a href="https://hyperskill.org/projects/100/stages/552/implement">JetBrains
+    Academy</a>
+  time: Sun, 20 Sep 2020 03:42:37 UTC
+record: 3

@@ -3,6 +3,7 @@ package seamcarving
 import java.awt.Color
 import java.awt.image.BufferedImage
 import java.io.File
+import java.lang.StrictMath.min
 import java.util.*
 import javax.imageio.ImageIO
 import kotlin.math.pow
@@ -13,11 +14,17 @@ val imagePath = "C:\\Users\\nesce\\IdeaProjects\\Seam Carving\\Seam Carving\\tas
 
 
 
+
 fun main(args: Array<String>) {
     val imagein = imagePath + if (args.contains("-in")) args[1 + args.indexOf("-in")].replace("/", "\\") else "src\\images\\blue.png"
     val out = imagePath + if (args.contains("-out")) args[1 + args.indexOf("-out")].replace("/", "\\") else "src\\images\\blue_intensity.png"
-    val intensityImage = ImageIO.read(File(imagein)).getEnergyMap().intensityImage()
-    ImageIO.write(intensityImage, "PNG", File(out))
+    val image = ImageIO.read(File(imagein))
+    val seam = image.getEnergyMap().verticalSeam()
+    for (point in seam) {
+        image.setRGB(point.first, point.second, 255.shl(16))
+    }
+
+    ImageIO.write(image, "PNG", File(out))
 
 }
 
@@ -44,14 +51,14 @@ infix fun Color.diffSquare(other: Color): Int {
 fun Int.sq():Int {
     return this * this
 }
-fun Int.sqrt():Float {
-    return this.toFloat().pow(0.5f)
+fun Int.sqrt():Double {
+    return this.toDouble().pow(0.5)
 }
 
-fun BufferedImage.getEnergyMap(): Array<FloatArray> {
+fun BufferedImage.getEnergyMap(): Array<DoubleArray> {
     val width = this.width
     val height = this.height
-    val energyMap = Array(height) { FloatArray(width) { 0.0f } }
+    val energyMap = Array(height) { DoubleArray(width) { 0.0 } }
     for (j in 0 until height) {
         for (i in 0 until width) {
             val xgrad = when (i) {
@@ -69,7 +76,7 @@ fun BufferedImage.getEnergyMap(): Array<FloatArray> {
     }
     return energyMap
 }
-fun Array<FloatArray>.intensityImage(): BufferedImage {
+fun Array<DoubleArray>.intensityImage(): BufferedImage {
     val maxEnergy = this.maxOf { row -> row.maxOf { it } }
     val height = this.size
     val width = this[0].size
@@ -101,4 +108,23 @@ fun saveImage(image: BufferedImage) {
     println("Enter output image name:")
     val name = input.next()
     ImageIO.write(image, "PNG", File(name))
+}
+
+fun Array<DoubleArray>.verticalSeam(): List<Pair<Int, Int>> {
+    val lastIndex = this[0].size - 1
+    var distMap = (0..lastIndex).map { index -> listOf(index) to this[0][index] }
+    for (j in 1 until this.size) {
+        val array = Array(lastIndex + 1) { emptyList<Int>() to -1.0}
+        for (i in array.indices) {
+            val min = when (i) {
+                0 -> distMap.slice(0..1).minByOrNull { it.second }
+                lastIndex -> distMap.slice(lastIndex -1..lastIndex).minByOrNull { it.second }
+                else -> distMap.slice(i - 1..i + 1).minByOrNull { it.second }
+            }?: distMap[i]
+            array[i] = min.first.plus(i) to (min.second + this[j][i])
+        }
+        distMap = array.toList()
+    }
+    val shortest = distMap.minByOrNull { it.second }?:distMap[0]
+    return shortest.first.mapIndexed { index, i -> i to index }
 }
